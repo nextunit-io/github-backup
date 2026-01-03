@@ -19,7 +19,7 @@ A small CLI tool to back up GitHub repositories to a local directory. The tool q
 
 - Download the version file in the releases
 - Unzip the file
-- Execute chmod +x `github-backup*` and execute the `github-backup*` file
+- Execute `chmod +x github-backup*` and execute the `github-backup*` file
 
 ## Usage example
 

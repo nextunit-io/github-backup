@@ -54,10 +54,12 @@ jobs:
           go-version: "^1.25"
           check-latest: true
           cache-dependency-path: subdir/go.sum
+          working-directory: src
       - name: Set env var for executable output name
         shell: bash
         run: echo "OUTPUT_NAME=github-backup" >> $GITHUB_ENV
       - name: Build for ${{ matrix.targets.os }} / ${{ matrix.targets.arch }}
+        working-directory: src
         run: GOOS="${{ matrix.targets.os }}" GOARCH="${{ matrix.targets.arch }}" go build -o ${{ env.OUTPUT_NAME }}
       - name: Set env var for executable (not windows)
         if: matrix.targets.os != 'windows'
@@ -74,13 +76,14 @@ jobs:
         run: echo "ZIPFILE=${{ env.OUTPUT_NAME }}-${{ matrix.targets.os }}-${{ matrix.targets.arch }}.zip" >> $GITHUB_ENV
       - name: Create artifactory ZIP
         shell: bash
+        working-directory: src
         run: |
           zip ${{ env.ZIPFILE }} ${{ env.EXECUTABLE }}
       - name: Move file to artifact directory
         shell: bash
         run: |
           mkdir artifact
-          mv ${{ env.ZIPFILE }} artifact/
+          mv src/${{ env.ZIPFILE }} artifact/
       - name: Save artifact
         uses: actions/upload-artifact@v6
         with:
