@@ -42,12 +42,14 @@ func init() {
 		},
 	}
 
+	var nonInteractive bool
 	rootCMD.PersistentFlags().StringVarP(&pflags.Token, "token", "t", "", "GitHub personal access token")
 	rootCMD.PersistentFlags().BoolVarP(&pflags.Verbose, "verbose", "v", false, "Enable verbose output")
 	rootCMD.PersistentFlags().StringSliceVarP(&pflags.Users, "users", "u", []string{}, "GitHub users to backup")
 	rootCMD.PersistentFlags().StringSliceVarP(&pflags.Orgs, "orgs", "o", []string{}, "GitHub organizations to backup")
 	rootCMD.PersistentFlags().StringVarP(&pflags.OutputFile, "file", "f", "", "Output file for the backup zip")
-	rootCMD.PersistentFlags().BoolVarP(&pflags.IsInteractive, "interactive", "i", true, "Enable interactive mode")
+	rootCMD.PersistentFlags().BoolVarP(&nonInteractive, "non-interactive", "i", false, "Disables interactive mode")
+	pflags.IsInteractive = !nonInteractive
 }
 
 func Execute() {
