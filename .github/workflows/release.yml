@@ -115,6 +115,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          woring-directory: docker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
