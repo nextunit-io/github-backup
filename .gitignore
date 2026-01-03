@@ -35,3 +35,5 @@ go.work.sum
 .github-backup
 backup.zip
 .DS_Store
+
+src/github-backup*
