@@ -53,6 +53,7 @@ jobs:
         shell: bash
         run: |
           echo "EXECUTABLE=${{ env.OUTPUT_NAME }}.exe" >> $GITHUB_ENV
+          ls -la
           mv ${{ env.OUTPUT_NAME }} ${{ env.OUTPUT_NAME }}.exe
       - name: Set env var for zip file
         shell: bash
