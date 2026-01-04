@@ -24,6 +24,9 @@ jobs:
           - os: "linux"
             arch: "amd64"
             cross: false
+          - os: "linux"
+            arch: "arm64"
+            cross: false
           - os: "windows"
             arch: "amd64"
             cross: false
@@ -92,15 +95,15 @@ jobs:
       - name: Get release artifacts from previous job
         uses: actions/download-artifact@v7
         with:
-          name: artifact-linux-amd64
           path: artifact
+          merge-multiple: true
       - name: Move file to docker build context
         shell: bash
         run: |
           unzip artifact/github-backup-linux-amd64.zip
-          ls -la
-          mv github-backup docker/github-backup
-          ls -la docker
+          mv github-backup docker/github-backup-amd64
+          unzip artifact/github-backup-linux-arm64.zip
+          mv github-backup docker/github-backup-arm64
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:

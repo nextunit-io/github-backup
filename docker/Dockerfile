@@ -18,14 +18,19 @@ RUN adduser -S backup
 RUN chown -R backup /backup
 
 COPY run.sh /home/backup/run.sh
-COPY github-backup /home/backup/github-backup
+COPY github-backup-amd64 /home/backup/github-backup-amd64
+COPY github-backup-arm64 /home/backup/github-backup-arm64
+COPY slack /home/backup/slack
+
 RUN chown backup /home/backup/run.sh
-RUN chown backup /home/backup/github-backup
+RUN chown backup /home/backup/github-backup-amd64
+RUN chown backup /home/backup/github-backup-arm64
 
 WORKDIR /home/backup
 USER backup
 
 RUN chmod +x run.sh
-RUN chmod +x github-backup
+RUN chmod +x github-backup-amd64
+RUN chmod +x github-backup-arm64
 
 ENTRYPOINT /bin/bash run.sh

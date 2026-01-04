@@ -1,0 +1,26 @@
+{
+  "attachments": [
+    {
+      "color": "danger",
+      "title": "❌ Backup fehlgeschlagen",
+      "text": "Das Backup konnte nicht erfolgreich abgeschlossen werden.",
+      "fields": [
+        {
+          "title": "ORGs & USERs",
+          "value": "{{ config }}",
+          "short": true
+        },
+        {
+          "title": "Zeitpunkt",
+          "value": "{{ time }}",
+          "short": true
+        },
+        {
+          "title": "Fehler",
+          "value": "{{ error_message }}",
+          "short": false
+        }
+      ]
+    }
+  ]
+}
