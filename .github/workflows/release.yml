@@ -97,13 +97,6 @@ jobs:
         with:
           path: artifact
           merge-multiple: true
-      - name: Move file to docker build context
-        shell: bash
-        run: |
-          unzip artifact/github-backup-linux-amd64.zip
-          mv github-backup docker/github-backup-amd64
-          unzip artifact/github-backup-linux-arm64.zip
-          mv github-backup docker/github-backup-arm64
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -118,7 +111,8 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: ./docker
+          context: .
+          file: ./docker/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
