@@ -4,7 +4,7 @@ ENV GOOS=linux
 
 WORKDIR /app
 
-COPY ../src .
+COPY ./src .
 
 RUN GOARCH=amd64 go build -o github-backup-amd64 .
 RUN GOARCH=arm64 go build -o github-backup-arm64 .
@@ -30,10 +30,10 @@ RUN mkdir -p /backup
 RUN adduser -S backup
 RUN chown -R backup /backup
 
-COPY run.sh /home/backup/run.sh
 COPY --from=builder /app/github-backup-amd64 /home/backup/github-backup-amd64
 COPY --from=builder /app/github-backup-arm64 /home/backup/github-backup-arm64
-COPY slack /home/backup/slack
+COPY docker/run.sh /home/backup/run.sh
+COPY docker/slack /home/backup/slack
 
 RUN chown backup /home/backup/run.sh
 RUN chown backup /home/backup/github-backup-amd64
