@@ -36,6 +36,9 @@ jobs:
           - os: 'linux'
             arch: 'amd64'
             cross: false
+          - os: 'linux'
+            arch: 'arm64'
+            cross: false
           - os: 'windows'
             arch: 'amd64'
             cross: false

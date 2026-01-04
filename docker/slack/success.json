@@ -1,0 +1,21 @@
+{
+  "attachments": [
+    {
+      "color": "good",
+      "title": "✅ Backup erfolgreich",
+      "text": "Das nächtliche Backup wurde ohne Fehler abgeschlossen.",
+      "fields": [
+        {
+          "title": "ORGs & USERs",
+          "value": "{{ config }}",
+          "short": true
+        },
+        {
+          "title": "Zeitpunkt",
+          "value": "{{ time }}",
+          "short": true
+        }
+      ]
+    }
+  ]
+}
