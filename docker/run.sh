@@ -30,35 +30,6 @@ for org in $ORGS; do
     CMD+=("--orgs=$org")
 done
 
-if [ "$ARCH" == "x86_64" ] || [ "$ARCH" == "amd64" ]; then
-    echo "Using github-backup-amd64 binary for architecture $ARCH"
-
-    ./github-backup-amd64 ${CMD[@]}
-elif [ "$ARCH" == "aarch64" ] || [ "$ARCH" == "arm64" ]; then
-    echo "Using github-backup-arm64 binary for architecture $ARCH"
-
-    ./github-backup-arm64 ${CMD[@]}
-else
-    echo "Unsupported architecture: $ARCH"
-
-    if [ -n "$SLACK_NOTIFICATION_ENDPOINT" ]; then
-      echo "ERROR: Doing slack notification."
-
-      PAYLOAD=$(jq \
-        --arg config "$CONFIG" \
-        --arg time "$PRETTY_TIME_NOW" \
-        --arg error "Unsupported architecture $ARCH" \
-        '.attachments[0].fields[0].value=$config
-        | .attachments[0].fields[1].value=$time
-        | .attachments[0].fields[2].value=$error' \
-        "slack/error.json"
-      )
-
-      curl -s -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $SLACK_NOTIFICATION_ENDPOINT
-    fi
-    exit 1
-fi
-
 ./github-backup ${CMD[@]}
 
 if [[ $? -ne 0 ]]; then

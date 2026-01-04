@@ -1,3 +1,14 @@
+FROM golang:1.25-alpine AS builder
+
+ENV GOOS=linux
+ENV GOARCH=amd64
+
+WORKDIR /app
+COPY ../src .
+RUN go build -o github-backup .
+
+
+
 FROM alpine:latest
 
 LABEL zero <zero@nextunit.io>
@@ -18,19 +29,16 @@ RUN adduser -S backup
 RUN chown -R backup /backup
 
 COPY run.sh /home/backup/run.sh
-COPY github-backup-amd64 /home/backup/github-backup-amd64
-COPY github-backup-arm64 /home/backup/github-backup-arm64
+COPY --from=builder /app/github-backup /home/backup/github-backup
 COPY slack /home/backup/slack
 
 RUN chown backup /home/backup/run.sh
-RUN chown backup /home/backup/github-backup-amd64
-RUN chown backup /home/backup/github-backup-arm64
+RUN chown backup /home/backup/github-backup
 
 WORKDIR /home/backup
 USER backup
 
 RUN chmod +x run.sh
-RUN chmod +x github-backup-amd64
-RUN chmod +x github-backup-arm64
+RUN chmod +x github-backup
 
 ENTRYPOINT /bin/bash run.sh
