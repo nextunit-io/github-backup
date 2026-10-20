@@ -34,14 +34,25 @@ func (b backup) StartBackup(input BackupInput) error {
 
 	log.Printf("Total repositories to back up: %d, start downloading...\n", len(repos))
 
+	failureRepos := []struct {
+		repo *github.Repository
+		err  error
+	}{}
 	for _, repo := range repos {
 		err := b.cloneRepository(repo)
 		if err != nil {
-			return err
+
+			failureRepos = append(failureRepos, struct {
+				repo *github.Repository
+				err  error
+			}{
+				repo: repo,
+				err:  err,
+			})
 		}
 	}
 
-	log.Println("Cloning completed successfully, start zipping...")
+	log.Printf("Cloning completed successfully (Failures: %d), start zipping...\n", len(failureRepos))
 
 	err := b.zip(input.OutputFile)
 	if err != nil {
@@ -53,6 +64,13 @@ func (b backup) StartBackup(input BackupInput) error {
 	os.RemoveAll(b.workingDir)
 
 	log.Println("Backup completed successfully.")
+
+	if len(failureRepos) > 0 {
+		log.Println("Issues with the following repositories:")
+		for _, repo := range failureRepos {
+			log.Printf("  %s: %s\n", *repo.repo.Name, repo.err.Error())
+		}
+	}
 
 	return nil
 }
