@@ -1,10 +1,10 @@
-FROM golang:1.25-alpine AS builder
+FROM golang:1.27-alpine AS builder
 
 ENV GOOS=linux
 
 WORKDIR /app
 
-COPY ./src .
+COPY ../src .
 
 RUN GOARCH=amd64 go build -o github-backup-amd64 .
 RUN GOARCH=arm64 go build -o github-backup-arm64 .
